@@ -23,6 +23,9 @@ def relative_L2_error(f, ftrue, x):
 
 
 def test_box_normal_pdf():
+    """
+    Testing normal distribution for box approach
+    """
     vx = np.linspace(-vmax, vmax, 1000)
     f = box_to_pdf(data, vx)
     ftrue = norm(0, sigma).pdf(vx)
@@ -31,7 +34,10 @@ def test_box_normal_pdf():
 
 
 def test_normal_pdf():
-    x = np.linspace(-vmax, vmax, 100)
+    """
+    Testing normal distribution for point approach
+    """
+    x = np.linspace(-vmax, vmax, 1000)
     fapprox = data_to_pdf(data[:, 3], x)
     ftrue = norm(0, sigma).pdf(x)
     error = relative_L2_error(fapprox, ftrue, x)
@@ -39,10 +45,13 @@ def test_normal_pdf():
 
 
 def test_uniform():
+    """
+    Testing uniform distribution
+    """
     np.random.seed(12)
-    a = np.sqrt(6) * sigma
+    a = np.sqrt(3) * sigma
     data_uniform = uniform(-a, a).rvs(N)
-    x = np.linspace(-vmax, vmax, 100)
+    x = np.linspace(-vmax, vmax, 10000)
     fapprox = data_to_pdf(data_uniform, x)
     ftrue = uniform(-a, a).pdf(x)
     error = relative_L2_error(fapprox, ftrue, x)
@@ -51,7 +60,7 @@ def test_uniform():
 
 def test_independence():
     """
-    This is supposed to check whether f2(x,y) = f1(x)f(y)
+    Checking if independency implies f2(x,y) = f1(x)f(y)
     """
     np.random.seed(123)
     N = 50000
@@ -59,7 +68,7 @@ def test_independence():
     vmax = 1
     resolution = 0.2
     mean = [0, 0]
-    cov = [[sigma, 0], [0, sigma]]
+    cov = [[sigma, 0.0], [0.0, sigma]]
     data = np.random.multivariate_normal(mean, cov, N)
     x, y = np.mgrid[-vmax:vmax:resolution, -vmax:vmax:resolution]
     coords = np.vstack([item.ravel() for item in [x, y]])
